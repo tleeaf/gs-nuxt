@@ -1,0 +1,42 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@hebilicious/vue-query-nuxt": "^0.3.0",
+    "@nuxt/fonts": "0.11.0",
+    "@nuxt/test-utils": "^3.17.2",
+    "@nuxtjs/tailwindcss": "6.13.1",
+    "@tanstack/vue-query": "^5.67.1",
+    "@tanstack/vue-query-devtools": "^5.67.2",
+    "@vesp/nuxt-fontawesome": "1.2.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/compiler-sfc": "^3.5.13",
+    "@vue/test-utils": "^2.4.6",
+    "@vueuse/nuxt": "12.8.2",
+    "graphql-request": "^7.1.2",
+    "happy-dom": "^17.4.3",
+    "nuxt": "^3.16.0",
+    "playwright-core": "^1.51.0",
+    "tachyons": "^4.12.0",
+    "uconn-banner": "^2.0.2",
+    "vitest": "^3.0.8",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.66.1",
+    "sass-embedded": "^1.85.1"
+  }
+}
