@@ -30,7 +30,7 @@
 
         <a v-if="hasSite" id="button" :style="`text-decoration: none; border: 2px solid ${btnColor}; background-color:${hover ? 'white' : btnColor
           }; border-color:${btnColor} !important; color: ${hover ? btnColor : btnTextColor
-          }`" @mouseleave="hover = false" @mouseenter="hover = true" :href="project.custom_fields.website_url"
+          }`" @mouseleave="hover = false" @mouseenter="hover = true" :href="project.websiteUrl"
           target="_blank" @click.stop="">
           Website
         </a>
@@ -44,66 +44,54 @@
   </div>
 </template>
 
-<script>
-import convert from 'color-convert'
-export default {
-  name: "Card",
-  props: {
-    project: {
-      type: Object,
-      default: () => { },
-    },
-    index: {
-      type: Number,
-    },
-    slug: {
-      type: String,
-    },
-    startsFlipped: {
-      type: Boolean,
-    }
-  },
-  data() {
-    return {
-      isFlipped: this.startsFlipped ? true : false,
-      flipping: false,
-      hover: false,
-      defaultFaceBackground: "https://dev-greenhouse-studios.pantheonsite.io/wp-content/uploads/2021/11/Card_Back_bright_green_new.jpg"
-    };
-  },
-  computed: {
-    phase() {
-      return (this.index * Math.PI) / 2;
-    },
-    btnColor() {
-      return this.project.btnColor
-        ? this.project.btnColor
-        : "#8CC947";
-    },
-    btnTextColor() {
-      return this.project.btnColor && convert.hex.hsl(this.project.btnColor)[2] <= 50
-        ? "white"
-        : "black";
-    },
-    hasSite() {
-      return this.project.custom_fields?.website_url && this.project.custom_fields?.website_url[0] !== "";
-    },
-  },
-  methods: {
-    flipCard() {
-      var t = this;
-      this.isFlipped = !this.isFlipped;
-      this.flipping = true;
-      setTimeout(() => {
-        t.flipping = false;
-      }, 600);
-    },
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import convert from 'color-convert';
 
-    reset() {
-      this.isFlipped = false;
-    }
+const props = defineProps({
+  project: {
+    type: Object,
+    default: () => ({}),
   },
+  index: {
+    type: Number,
+  },
+  slug: {
+    type: String,
+  },
+  startsFlipped: {
+    type: Boolean,
+  }
+});
+
+const isFlipped = ref(props.startsFlipped ? true : false);
+const flipping = ref(false);
+const hover = ref(false);
+const defaultFaceBackground = "https://dev-greenhouse-studios.pantheonsite.io/wp-content/uploads/2021/11/Card_Back_bright_green_new.jpg";
+
+const phase = computed(() => (props.index * Math.PI) / 2);
+
+const btnColor = computed(() => props.project.btnColor ? props.project.btnColor : "#8CC947");
+
+const btnTextColor = computed(() => props.project.btnColor && convert.hex.hsl(props.project.btnColor)[2] <= 50 ? "white" : "black");
+
+const hasSite = computed(() => props.project.websiteUrl);
+
+const flipCard = () => {
+  isFlipped.value = !isFlipped.value;
+  flipping.value = true;
+  setTimeout(() => {
+    flipping.value = false;
+  }, 600);
 };
+
+const reset = () => {
+  isFlipped.value = false;
+};
+
+onMounted(() => {
+  // Any additional setup can be done here
+});
 </script>
 
 <style lang="scss" scoped>
