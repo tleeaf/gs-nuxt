@@ -1,6 +1,6 @@
 <template>
     <Header></Header>
-    <div class="p-24">
+    <div class="md:p-24 p-8">
         <slot></slot>
     </div>
     <Footer></Footer>

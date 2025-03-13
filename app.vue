@@ -2,15 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 const queryClient = useQueryClient()
-
-
-// const { data, isLoading, error } = usePosts()
-// const { data, isLoading, error } = useProjects()
-
-// const { isLoading, isError, data, error } = useQuery({
-//   queryKey: ['todos'],
-//   queryFn: () => $fetch("https://pokeapi.co/api/v2/pokemon/ditto"), // Use $fetch with your api routes to get typesafety 
-// })
+const layout="blog"
 </script>
 
 <template>
@@ -160,5 +152,9 @@ a:active {
     background-position: 12.5rem top;
     /*200px*/
   }
+}
+
+h1,h2,h3{
+  font-weight: 700;
 }
 </style>

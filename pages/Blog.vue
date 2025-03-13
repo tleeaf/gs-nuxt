@@ -30,7 +30,11 @@
 
 <script setup>
 import { ref } from 'vue';
-
+definePageMeta({
+  title: 'Blog',
+  description: 'A blog about web development and other things',
+  layout: 'blog',
+});
 const { data: allPosts } = usePosts();
 const selectedValue = ref("");
 

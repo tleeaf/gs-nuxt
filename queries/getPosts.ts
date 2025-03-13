@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
 export const GET_POSTS = gql`
- query Posts {
+query Posts {
   posts(first: 100) {
     nodes {
       blueFrame
@@ -25,7 +25,18 @@ export const GET_POSTS = gql`
           name
         }
       }
+      author {
+        node {
+          firstName
+          lastName
+          name
+          avatar {
+            url
+          }
+        }
+      }
     }
   }
 }
+
 `;

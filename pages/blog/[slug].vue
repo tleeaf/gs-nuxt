@@ -1,137 +1,33 @@
 <template>
   <div id="blogmain">
-    <!-- <div v-if="!$store.getters.loading && post">
-      <div v-bind:style="categoryList[0].name
-      ? { background: categoryColor }
-      : { background: '#8cc947' }
-      " class="flex pa6-l pa2 items-center justify-center white relative" id="blog-read-header">
-        <img :src="headerBgTexture" class="cover absolute line-art">
-        <router-link class="absolute left-2 top-2 fw7 f4" id="back-link" to="/blog" v-bind:style="categoryList[0].name
-      ? { background: categoryColor }
-      : { background: '#8cc947' }
-      ">
-
-          <i>&#8592;</i> Back </router-link>
-        <div class="flex flex-column flex-row-l justify-center items-center ">
-          <div class="relative top-0 left-0">
-            <img v-if="blueFrame" class="frame mr4-l shadow-2 mb3 mw6-ns mt5 mt0-l w5-m ma0 relative"
-              style="object-fit: cover;" src="../public/img/thumbnail-blue.png" alt="">
-            <img v-if="greenFrame" class="frame mr4-l shadow-2 mb3 mw6-ns mt5 mt0-l w5-m ma0 relative"
-              style="object-fit: cover;" src="../public/img/thumbnail-green.png" alt="">
-            <img v-if="mintFrame" class="frame mr4-l shadow-2 mb3 mw6-ns  mt5 mt0-l w5-m ma0 relative"
-              style="object-fit: cover;" src="../public/img/thumbnail-mint.png" alt="">
-            <img v-if="turquoiseFrame" class="frame mr4-l shadow-2 mb3 mt5 mt0-l mw6-ns w5-m ma0 relative"
-              style="object-fit: cover;" src="../public/img/thumbnail-turquoise.png" alt="">
-            <div v-if="blueFrame || turquoiseFrame || mintFrame || greenFrame">
-              <img v-if="post.fimg_url && showFeaturedImg" :src="post.fimg_url" id="featured-img" alt=""
-                class="mr4-l shadow-2 mb3 ma0 mt5 mt0-l absolute top-0 left-0"
-                style="object-fit: cover; height: 250px; width: auto;" />
-            </div>
-            <div v-if="!blueFrame && !turquoiseFrame && !mintFrame && !greenFrame">
-              <img v-if="post.fimg_url && showFeaturedImg" :src="post.fimg_url" id="" alt="" class="shadow-2 mt5 mt0-l "
-                style=" height: 250px; width: 100%" />
-            </div>
-          </div>
-          <div class="blogtitle lh-solid  ph2 ma3-l ma0 tc tl-l">
-            <div>
-              <h2 class="f3 f2-l lh-title" v-html="post.title.rendered"></h2>
-              <div class="f4 pv2 flex items-center justify-center justify-start-l tl-l tc mb2">
-                <img :src="authorImage" alt="" class="author-image br-100 mr3-ns" />
-                <div class="">
-                  <div class="fw7 pa1">{{ authorName }}</div>
-                  <div class="fw2 pa1">{{ authorRole }}</div>
-                </div>
-              </div>
-              <div class="pa1 w-100 flex items-center justify-center justify-start-l">
-                <span class="mr5">{{
-      new Date(post.date).toLocaleDateString("en-us")
-    }}</span>
-                <span class="f5 fw2 mv3-ns">{{ readTime }} minute read</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div v-if="post">
+      <BlogHero :post="post"></BlogHero>
       <div>
         <div class="textbox w-50-l w-90 pv5-ns pv1 center" style="line-height: 2.2rem">
           <span class="dn di-l"><share-links></share-links></span>
-          <h3 v-if="post.custom_fields.byline" class="i font-weight-500 f5 fw5">
-            {{ post.custom_fields.byline[0] }}
+          <h3 v-if="post.byline" class="i font-weight-500 f5 fw5">
+            {{ post.byline }}
           </h3>
-
-          <span v-html="post.content.rendered" ref="contentContainer" id="from-wp-content"></span>
-
-          <div class="mv2">
-            <span class="dn-l di"><share-links></share-links></span>
-            <p class="di fw7 mr3">Topics:</p>
-            <a :href="'/blog/category/' + cat.name.toLowerCase()" class="ph2 pv1 f6 fw6 mh2 category"
-              v-bind:style="categoryList[0].name ? { background: categoryColor } : { background: '#8cc947' }"
-              v-for="cat in categoryList" :key="cat.name">{{ cat.name }}</a>
-          </div>
-
-          <div class="text-1 mv5" v-if="getSuggestedPosts.length > 0">
-            <div class="fprojects-text">
-              <h3 class="title-2">Suggested Blog Posts</h3>
-            </div>
-            <div class="suggestedPosts">
-              <blog-card class="mh3 lh-copy" v-for="p in getSuggestedPosts" :key="p.slug" :post="p" :title="p.title"
-                :content="p.content" :date="p.date" :slug="p.slug"></blog-card>
-            </div>
-          </div>
+          <span v-html="post.content" ref="contentContainer" id="from-wp-content"></span>
+          <ShareLinks></ShareLinks>
         </div>
       </div>
-   
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, onUpdated } from 'vue';
-
+import { computed, ref } from 'vue';
+import BlogHero from '~/components/BlogHero.vue';
 const route = useRoute();
-
+const { data: posts } = usePosts();
+const post = computed(() => posts.value?.find(p => p.slug === route.params.slug));
 const date = ref("");
 const loaded = ref(true);
-
-// const postBySlug = computed(() => store.getters.postBySlug);
-// const allCategories = computed(() => store.getters.allCategories);
-// const nextPost = computed(() => store.getters.nextPost);
-// const previousPost = computed(() => store.getters.previousPost);
-
-// const post = computed(() => postBySlug.value(route.params.slug));
-
-// const getSuggestedPosts = computed(() => {
-//   let allPosts = store.state.posts;
-//   let numSuggested = 0;
-//   let suggestedPosts = [];
-//   let currentCategories = post.value.categories;
-//   for (let i = 0; i < allPosts.length; i++) {
-//     if (allPosts[i] != post.value) {
-//       let postCategories = allPosts[i].categories;
-//       for (let x = 0; x < currentCategories.length; x++) {
-//         if (postCategories.includes(currentCategories[x])) {
-//           suggestedPosts.push(allPosts[i]);
-//           numSuggested += 1;
-//         }
-//         break;
-//       }
-//     }
-//     if (numSuggested == 3) {
-//       break;
-//     }
-//   }
-//   return suggestedPosts;
-// });
-
-const wordCount = computed(() => {
-  if (post.value.content)
-    return post.value.content.split(" ").length;
-  return 0;
-});
-
-const readTime = computed(() => {
-  if (wordCount.value) return Math.round(wordCount.value / 200);
-  else return null;
+definePageMeta({
+  // title: post.value?.title.rendered,
+  // description: post.value?.excerpt.rendered,
+  layout: 'bloglayout',
 });
 
 const showFeaturedImg = computed(() => {
@@ -140,48 +36,11 @@ const showFeaturedImg = computed(() => {
   else return true;
 });
 
-const headerBgColor = computed(() => {
-  if (post.value.custom_fields.headerBgColor) {
-    return post.value.custom_fields.headerBgColor;
-  } else if (blueFrame.value) {
-    return "#fff";
-  } else return "#de7f42";
-});
 
-const authorName = computed(() => post.value._embedded.author[0].name);
-const author = computed(() => post.value._embedded.author[0]);
-
-const authorPersonRecord = computed(() => {
-  let author = post.value._embedded.author[0].name;
-  return store.state.people.find(
-    (x) => x.title.rendered === author
-  );
-});
-
-const authorRole = computed(() => store.state.peopleCategories.find(x => x.id === authorPersonRecord.value?.people_category[0])?.name);
-
-const authorImage = computed(() => {
-  let result = authorPersonRecord.value;
-  result = result?.image;
-  if (!result)
-    result =
-      "https://dev-greenhouse-studios.pantheonsite.io/wp-content/uploads/2017/01/g_icon-placeholder-1.jpg";
-  return result;
-});
-
-const blueFrame = computed(() => post.value.custom_fields.blueFrame);
-const mintFrame = computed(() => post.value.custom_fields.mintFrame);
-const turquoiseFrame = computed(() => post.value.custom_fields.turquoiseFrame);
-const greenFrame = computed(() => post.value.custom_fields.greenFrame);
-
-const categoryList = computed(() => {
-  let result;
-  if (post.value.categories && store.state.categories)
-    result = store.state.categories.filter((x) =>
-      post.value.categories.includes(x.id)
-    );
-  return result;
-});
+const blueFrame = computed(() => post.value.blueFrame);
+const mintFrame = computed(() => post.value.mintFrame);
+const turquoiseFrame = computed(() => post.value.turquoiseFrame);
+const greenFrame = computed(() => post.value.greenFrame);
 
 const headerBgTexture = computed(() => {
   if (post.value.slug.length <= 22) {
@@ -208,9 +67,9 @@ const categoryColor = computed(() => {
   return color;
 });
 
-onUpdated(() => {
-  store.dispatch('setNavColor', categoryColor.value);
-});
+// onUpdated(() => {
+//   store.dispatch('setNavColor', categoryColor.value);
+// });
 
 const wrapImagesWithText = () => {
   loaded.value = false;
@@ -252,83 +111,11 @@ const wrapImagesWithText = () => {
   }
   loaded.value = true;
 };
-
-const getCategoryById = (id) => {
-  for (let i = 0; i < allCategories.value.length; i++) {
-    if (allCategories.value[i].id == id) {
-      return allCategories.value[i].name;
-    }
-  }
-};
-
-const getCategorySlug = (id) => {
-  for (let i = 0; i < allCategories.value.length; i++) {
-    if (allCategories.value[i].id == id) {
-      return allCategories.value[i].slug;
-    }
-  }
-};
-
-const removeTags = (str) => {
-  if (str === null || str === "") return false;
-  else {
-    str = str.toString();
-    str = str.replace(/&#8217;/g, "'");
-    str = str.replace(/(<([^>]+)>)/gi, "");
-    str = str.replace(/&amp;/g, "&");
-    str = str.replace(/&nbsp;/g, " ");
-  }
-  return str;
-};
-
-const getImg = (str) => {
-  var regex = /<img.*?src="(.*?)"/;
-  var src = regex.exec(str);
-  if (src == null) {
-    // Placeholder Image
-    src =
-      "https://dev-greenhouse-studios.pantheonsite.io/wp-content/uploads/2017/10/Greenhouse-Studios-Logos_STACKED-WORDMARK_TWO-COLOR-1.jpg";
-  } else {
-    src = src[1];
-  }
-  return src;
-};
-
-const getAlt = (str) => {
-  var regex = /<img.*?src="(.*?)" alt="(.*?)"/;
-  var alt = regex.exec(str);
-  if (alt == null) {
-    // Placeholder Image
-    alt = "A blog image";
-  } else {
-    alt = alt[2];
-  }
-  return alt;
-};
-
-const isMobile = () => {
-  if (
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
 </script>
-
-<style lang="scss">
-
-#from-wp-content >>> p{
-  background-color: #8cc947;
-}
-</style>
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import "./assets/blog.css";
+@import "@/assets/blog.css";
 
 body {
   font-family: "Libre Franklin", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -351,18 +138,16 @@ body {
   text-decoration: underline;
 }
 
-
-
-#from-wp-content{
+#from-wp-content {
   h1 {
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.1;
-  color: #161616;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  // font-size: 100pt;
-}
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #161616;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    // font-size: 100pt;
+  }
 }
 
 .date {
@@ -544,12 +329,12 @@ p>img.alignleft {
   margin-right: 1.5em;
 }
 
-#from-wp-content >>> .alignleft,
-#from-wp-content >>> img.alignleft {
-  display: inline;
-  float: left;
-  margin-right: 1.5em;
-}
+// #from-wp-content >>> .alignleft,
+// #from-wp-content >>> img.alignleft {
+//   display: inline;
+//   float: left;
+//   margin-right: 1.5em;
+// }
 
 
 
@@ -567,5 +352,4 @@ img.aligncenter {
   margin-left: auto;
   margin-right: auto;
 }
-
 </style>

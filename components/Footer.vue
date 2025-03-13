@@ -45,27 +45,39 @@
     </div>
         <div class="footer-2">
           <div class="icons">
-        <a href="mailto:greenhousestudios@uconn.edu" class="fa fa-envelope"></a>
+        <a href="mailto:greenhousestudios@uconn.edu" >
+          <FontAwesome icon="envelope" class="fa text-white white" />
+        </a>
         </div>
         <div class="icons">
-            <a href="https://www.instagram.com/greenhousestudiosuconn/?hl=en" class="fa fa-instagram"
-              ></a>
+            <a href="https://www.instagram.com/greenhousestudiosuconn/?hl=en" 
+              >
+            <FontAwesome icon="instagram" class="fa text-white white" />
+            </a>
             </div>
             <div class="icons">
-            <a href="https://www.youtube.com/channel/UCuDO0yPZYSaXBE3G7ArmQjw" class="fa fa-youtube-play"
-              ></a>
+            <a href="https://www.youtube.com/channel/UCuDO0yPZYSaXBE3G7ArmQjw"
+              >
+            <FontAwesome icon="youtube" class="fa text-white white" />
+            </a>
             </div>
             <div class="icons">
-            <a href="https://www.facebook.com/GreenhouseStudiosUConn/" class="fa fa-facebook"
-              ></a>
+            <a href="https://www.facebook.com/GreenhouseStudiosUConn/" 
+              >
+            <FontAwesome icon="facebook" class="fa text-white white" />
+            </a>
               </div>
               <div class="icons">
-            <a href="https://twitter.com/greenhouseuconn?lang=en" class="fa fa-twitter"
-              ></a>
+            <a href="https://twitter.com/greenhouseuconn?lang=en"
+              >
+            <FontAwesome icon="twitter" class="fa text-white white" />
+            </a>
               </div>
               <div class="icons">
-            <a href="https://www.linkedin.com/company/greenhousestudiosuconn" class="fa fa-linkedin"
-              ></a>
+            <a href="https://www.linkedin.com/company/greenhousestudiosuconn" 
+              >
+            <FontAwesome icon="linkedin" class="fa text-white white" />
+            </a>
               </div>
     </div>
     </div>

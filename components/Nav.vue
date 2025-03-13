@@ -6,7 +6,7 @@
     <img src="../public/img/watercolor-nav.avif" alt="gs-watercolor-background" class="absolute" id="watercolor-bg" />
     <input class="menu-btn" type="checkbox" id="menu-btn" @click="toggleMenu()" />
     <label class="absolute-l top-0 left-0 pa2 f3-ns f5 menu-icon" for="menu-btn">
-      <span><i class="fa fa-2x fa-bars"></i></span>
+      <span><FontAwesome icon="bars"></FontAwesome></span>
     </label>
     <ul class="menu ttc visible">
       <li v-for="item in items" :key="item.title" class="menu-link relative f3 overflow-visible"
@@ -26,8 +26,7 @@
         </ul>
       </li>
     </ul>
-    <MobileNav :menuItems="menuItems?.menuItems?.nodes" :showMenu="showMenu" @toggleMenu="toggleMenu"
-      @toggleMenuDelay="toggleMenuDelay" />
+    <MobileNav :menuItems="menuItems" />
   </nav>
 </template>
 
@@ -35,18 +34,9 @@
 import { ref, onMounted } from 'vue';
 
 const items = [{ "id": "cG9zdDo3MjIx", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io", "label": "Home" }, { "id": "cG9zdDo3Mjc0", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io/people_category/people/", "label": "People" }, { "id": "cG9zdDo3MjI0", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io/join-us/", "label": "Join Us!" }, { "id": "cG9zdDo3MjYw", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io/category/projects/", "label": "Projects" }, { "id": "cG9zdDo3NTIx", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io/facilitation/", "label": "Services" }, { "id": "cG9zdDo3Mjg4", "title": null, "url": "https://dev-greenhouse-studios.pantheonsite.io/blog/", "label": "Blog" }]
-
-const showMenu = ref(false);
 const activeDropdown = ref(null);
 const { data: menuItems, isLoading, isPending, error } = useMenuItems();
 
-const toggleMenu = () => {
-  showMenu.value = !showMenu.value;
-};
-
-const toggleMenuDelay = () => {
-  setTimeout(() => toggleMenu(), 300);
-};
 
 const showDropdown = (index) => {
   activeDropdown.value = index;
@@ -58,7 +48,7 @@ const hideDropdown = () => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #page-indicator {
   font-family: SAMO;
 }
@@ -111,8 +101,6 @@ const hideDropdown = () => {
   }
 }
 
-li:hover {}
-
 .header {
   width: 100%;
 }
@@ -139,13 +127,7 @@ li:hover {}
   text-decoration: none;
 }
 
-#mobile-menu-list>li a {
-  display: block;
-  // padding: 20px 20px;
-  color: white;
-  font-size: 1.75rem;
-  text-decoration: none;
-}
+
 
 .header .logo {
   display: block;
@@ -212,20 +194,7 @@ li:hover {}
   display: none;
 }
 
-#mobile-menu {
-  font-size: 10rem !important;
-  background-color: var(--main-bg-color);
-  height: 100vh;
-}
 
-#mobile-menu-list {
-  font-weight: 800;
-
-  >li {
-    font-family: "Libre Franklin" !important;
-    color: white !important;
-  }
-}
 
 .menu {
   font-family: "Libre Franklin" !important;
@@ -290,13 +259,7 @@ li:hover {}
   }
 }
 
-.mobilebutton {
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: white;
-  outline: none;
-}
+
 
 /* Ripple effect */
 .ripple {
