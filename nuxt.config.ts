@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   },
   fontawesome: {
     icons: {
-      solid: ["bars", "envelope","save", "chevron-right", "chevron-left"],
+      solid: ["bars", "envelope","save", "chevron-right", "chevron-left","file"],
       brands: ["instagram", "youtube", "twitter", "facebook", "linkedin"],
     },
   },
